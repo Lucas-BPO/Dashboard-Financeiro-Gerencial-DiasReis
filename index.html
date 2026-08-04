@@ -1158,7 +1158,7 @@ body {
 </div>
 
 <!-- ===================== TOAST ===================== -->
-<div id="toast" class="toast success visible">Dados carregados do HTML salvo.</div>
+<div id="toast" class="toast success">Dados carregados do HTML salvo.</div>
 
 <!-- ===================== HEADER ===================== -->
 <header class="dashboard-header no-print">
@@ -3597,8 +3597,24 @@ function downloadFallback(html) {
   showToast('HTML salvo (download)! Seu navegador não suporta salvar direto na pasta.', 'success');
 }
 
+// Limpa estados visuais passageiros (toast, tooltip de hover, dropdown de
+// filtro aberto, modal aberto) antes de capturar o outerHTML — sem isso,
+// se algum desses estivesse visível bem no instante do clique em "Salvar
+// HTML", ele seria gravado "preso" (ex.: toast nunca mais some) no arquivo
+// salvo, já que o HTML estático não sabe que aquele estado era temporário.
+function resetTransientUIState() {
+  const toast = document.getElementById('toast');
+  if (toast) toast.classList.remove('visible');
+  document.querySelectorAll('.kpi-tooltip.tip-visible').forEach(el => el.classList.remove('tip-visible'));
+  document.querySelectorAll('.flt-drop-menu.open').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.flt-drop-btn.open').forEach(el => el.classList.remove('open'));
+  const modal = document.getElementById('inadimplencia-modal');
+  if (modal) modal.classList.remove('open');
+}
+
 async function saveHTML() {
   if (!AppState.rawData) { showToast('Carregue os dados primeiro.', 'error'); return; }
+  resetTransientUIState();
   const embedded = document.getElementById('embedded-data');
   embedded.textContent = JSON.stringify(AppState.rawData, (key, val) => {
     if (val instanceof Date) return { __type: 'Date', iso: val.toISOString() };
