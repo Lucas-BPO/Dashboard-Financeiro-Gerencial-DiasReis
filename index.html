@@ -226,8 +226,11 @@ body {
 .action-btn-primary:hover { background: #fff; }
 
 /* ===================== MAIN CONTAINER ===================== */
+/* Sem max-width — o dashboard ocupa toda a largura da tela em qualquer
+   monitor (inclusive ultrawide), célular ou tablet; só o padding lateral
+   dá a margem de respiro. */
 .dashboard-main {
-  max-width: 1600px; margin: 0 auto; padding: 24px 28px 48px;
+  width: 100%; padding: 24px 28px 48px;
 }
 
 /* ===================== KPI ROW ===================== */
@@ -608,11 +611,13 @@ body {
 .cc-legend-item:hover { background: var(--bg-hover); }
 .cc-legend-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 .cc-legend-label {
-  flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+  /* não cresce mais para empurrar a porcentagem até a ponta — o nome fica
+     no seu tamanho natural e a porcentagem cola logo em seguida */
+  flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis;
   white-space: nowrap; font-size: 11px; font-weight: 500; color: var(--text);
 }
 .cc-legend-pct {
-  flex-shrink: 0; margin-left: auto; text-align: right; min-width: 44px;
+  flex-shrink: 0; margin-left: 6px; text-align: right; min-width: 34px;
   font-size: 11px; font-weight: 600; color: var(--text-muted);
   font-feature-settings: 'tnum' on;
 }
@@ -1033,10 +1038,24 @@ body {
   .dre-table-card { max-height: 300px; }
   .dfc-container { grid-template-columns: 1fr; }
   .header-filters { display: none; }
+  /* Sem os filtros, ainda sobram logo + título + botões de ação — em vez de
+     deixar transbordar a tela (o que force um scroll horizontal na página
+     inteira), o cabeçalho quebra em duas linhas. */
+  .dashboard-header { flex-wrap: wrap; height: auto; padding: 12px 18px; gap: 8px; }
+  .header-actions { width: 100%; justify-content: flex-end; }
+  .dashboard-main { padding: 18px 16px 32px; }
 }
 @media (max-width: 600px) {
   .kpi-row { grid-template-columns: 1fr; }
   .action-btn span { display: none; }
+  .dashboard-header { padding: 10px 12px; gap: 8px; }
+  .dashboard-main { padding: 14px 12px 28px; }
+  .header-logo { height: 34px; }
+  .header-divider { display: none; }
+  .header-title-main {
+    font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    max-width: calc(100vw - 130px);
+  }
 }
 
 /* ===================== SCROLLBAR ===================== */
@@ -1370,7 +1389,7 @@ body {
       <div id="fat-content" style="display: block;">
         <div class="grid-6040">
           <div>
-            <div class="chart-wrap" style=""><canvas id="chart-faturamento" height="238" style="display: block; box-sizing: border-box; height: 238px; width: 1048px;" width="1048"></canvas></div>
+            <div class="chart-wrap" style=""><canvas id="chart-faturamento" height="238" style="display: block; box-sizing: border-box; height: 238px; width: 1269px;" width="1269"></canvas></div>
           </div>
           <div class="chart-side-panel">
             <div class="table-card">
@@ -1435,7 +1454,7 @@ body {
       <div id="rec-content" style="display: block;">
         <div class="grid-6040">
           <div>
-            <div class="chart-wrap" style=""><canvas id="chart-receitas" height="238" style="display: block; box-sizing: border-box; height: 238px; width: 1048px;" width="1048"></canvas></div>
+            <div class="chart-wrap" style=""><canvas id="chart-receitas" height="238" style="display: block; box-sizing: border-box; height: 238px; width: 1269px;" width="1269"></canvas></div>
           </div>
           <div class="chart-side-panel">
             <div class="table-card">
@@ -1502,7 +1521,7 @@ body {
           <div>
             <div class="cc-treemap-wrap">
               <div class="cc-donut-canvas-wrap">
-                <canvas id="chart-cc-treemap" style="box-sizing: border-box; display: block; height: 298px; width: 569px;" width="569" height="298"></canvas>
+                <canvas id="chart-cc-treemap" style="box-sizing: border-box; display: block; height: 298px; width: 690px;" width="690" height="298"></canvas>
               </div>
               <div class="cc-legend-html" id="cc-legend-html"><div class="cc-legend-item"><span class="cc-legend-swatch" style="background:#B91C1C"></span>
       <span class="cc-legend-label">Diretoria</span>
@@ -1727,39 +1746,39 @@ body {
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(28)">Vale Transporte</label></td>
         <td>-R$&nbsp;14.589,00</td>
       </tr><tr class="dre-row-summary"><td>(=) Lucro Bruto</td><td>R$&nbsp;1.177.875,06</td></tr><tr class="dre-row-summary"><td>(=) Margem de Contribuição</td><td>84.9%</td></tr><tr class="dre-row-l1"><td>4 Despesas operacionais</td><td>-R$&nbsp;37.168,04</td></tr><tr class="dre-row-l2" data-group-idx="32">
-        <td><button class="dre-expand-btn" onclick="toggleDREGroup(32)">▶</button>4.1 Despesas comerciais</td>
+        <td><button class="dre-expand-btn" onclick="toggleDREGroup(32)">▼</button>4.1 Despesas comerciais</td>
         <td>-R$&nbsp;26.068,10</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="33" data-group-parent="32" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="33" data-group-parent="32" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(33)">Marketing e Publicidade</label></td>
         <td>-R$&nbsp;26.068,10</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="34" data-group-parent="32" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="34" data-group-parent="32" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(34)">Viagens e Estadias</label></td>
         <td>R$&nbsp;0,00</td>
       </tr><tr class="dre-row-l2" data-group-idx="35">
-        <td><button class="dre-expand-btn" onclick="toggleDREGroup(35)">▶</button>4.2 Despesas administrativas</td>
+        <td><button class="dre-expand-btn" onclick="toggleDREGroup(35)">▼</button>4.2 Despesas administrativas</td>
         <td>-R$&nbsp;192,98</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="36" data-group-parent="35" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="36" data-group-parent="35" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(36)">Cartório</label></td>
         <td>R$&nbsp;0,00</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="37" data-group-parent="35" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="37" data-group-parent="35" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(37)">Compras Diversas</label></td>
         <td>R$&nbsp;0,00</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="38" data-group-parent="35" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="38" data-group-parent="35" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(38)">Papelaria e Material de Escritório</label></td>
         <td>-R$&nbsp;24,50</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="39" data-group-parent="35" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="39" data-group-parent="35" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(39)">TFLF - Taxa de Fiscalização</label></td>
         <td>-R$&nbsp;168,48</td>
       </tr><tr class="dre-row-l2" data-group-idx="40">
-        <td><button class="dre-expand-btn" onclick="toggleDREGroup(40)">▶</button>4.3 Outras despesas operacionais</td>
+        <td><button class="dre-expand-btn" onclick="toggleDREGroup(40)">▼</button>4.3 Outras despesas operacionais</td>
         <td>-R$&nbsp;10.906,96</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="41" data-group-parent="40" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="41" data-group-parent="40" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(41)">Brindes</label></td>
         <td>-R$&nbsp;759,12</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="42" data-group-parent="40" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="42" data-group-parent="40" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(42)">Pró-Labore</label></td>
         <td>-R$&nbsp;10.007,00</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="43" data-group-parent="40" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="43" data-group-parent="40" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(43)">Táxi / Uber / Motoboy</label></td>
         <td>-R$&nbsp;140,84</td>
       </tr><tr class="dre-row-summary"><td>(=) Lucro / Prejuízo Operacional</td><td>R$&nbsp;1.140.707,02</td></tr><tr class="dre-row-l1"><td>5 Receitas e despesas financeiras e não operacionais</td><td>R$&nbsp;1.454,28</td></tr><tr class="dre-row-l2" data-group-idx="46">
@@ -1775,27 +1794,27 @@ body {
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(49)">Juros e Multas Recebidos - Clientes</label></td>
         <td>R$&nbsp;0,00</td>
       </tr><tr class="dre-row-l2" data-group-idx="50">
-        <td><button class="dre-expand-btn" onclick="toggleDREGroup(50)">▶</button>5.2 Despesas financeiras</td>
+        <td><button class="dre-expand-btn" onclick="toggleDREGroup(50)">▼</button>5.2 Despesas financeiras</td>
         <td>-R$&nbsp;100,00</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="51" data-group-parent="50" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="51" data-group-parent="50" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(51)">Juros e Multas Diversos</label></td>
         <td>R$&nbsp;0,00</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="52" data-group-parent="50" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="52" data-group-parent="50" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(52)">Tarifas Bancárias</label></td>
         <td>-R$&nbsp;100,00</td>
       </tr><tr class="dre-row-l1"><td>6 Outras receitas e despesas não operacionais</td><td>-R$&nbsp;1.067.930,04</td></tr><tr class="dre-row-l2" data-group-idx="54">
-        <td><button class="dre-expand-btn" onclick="toggleDREGroup(54)">▶</button>6.1 Outras receitas não operacionais</td>
+        <td><button class="dre-expand-btn" onclick="toggleDREGroup(54)">▼</button>6.1 Outras receitas não operacionais</td>
         <td>R$&nbsp;69.172,82</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="55" data-group-parent="54" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="55" data-group-parent="54" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(55)">Estorno de Pagamento</label></td>
         <td>R$&nbsp;890,92</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="56" data-group-parent="54" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="56" data-group-parent="54" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(56)">Honorários de Sucumbência</label></td>
         <td>R$&nbsp;54.534,89</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="57" data-group-parent="54" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="57" data-group-parent="54" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(57)">Receb. Indevido</label></td>
         <td>R$&nbsp;3.900,00</td>
-      </tr><tr class="dre-row-l3" data-dre-idx="58" data-group-parent="54" style="display:none">
+      </tr><tr class="dre-row-l3" data-dre-idx="58" data-group-parent="54" style="">
         <td><label><input type="checkbox" class="dre-chk" onchange="toggleDRECategory(58)">Reembolso de Cliente</label></td>
         <td>R$&nbsp;9.847,01</td>
       </tr><tr class="dre-row-l2" data-group-idx="59">
@@ -2333,7 +2352,13 @@ function buildComboChart(canvasId, labels, barData, lineData, barLabel, lineLabe
           type: 'bar',
           label: barLabel,
           data: barData,
-          backgroundColor: toRgba(barColor || CHART_COLORS.bar, .5),
+          // barColor pode vir como array (uma cor por mês, ex.: DRE alternando
+          // verde/vermelho conforme o sinal) — toRgba() só aceita uma cor por vez
+          // e colapsaria o array inteiro na primeira cor, então cada item é
+          // convertido individualmente para preservar a cor de cada barra.
+          backgroundColor: Array.isArray(barColor)
+            ? barColor.map(c => toRgba(c, .5))
+            : toRgba(barColor || CHART_COLORS.bar, .5),
           hoverBackgroundColor: barHoverColor || toRgba(barColor || CHART_COLORS.bar, 1),
           borderRadius: 6,
           borderSkipped: false,
