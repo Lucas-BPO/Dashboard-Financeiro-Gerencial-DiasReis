@@ -409,6 +409,14 @@ body {
    (frases por extenso, tamanho variável a cada nova pendência lançada) */
 #kpi-inad-tooltip { min-width: 844px; max-width: 964px; }
 @media (max-width: 1400px) { #kpi-inad-tooltip { max-width: 844px; } }
+/* Sempre mostrar a lista completa de devedores, sem scroll vertical, e sem
+   espaço em branco nas laterais — as linhas ocupam toda a largura do tooltip
+   (o inset fica só no padding das células de ponta, não no container). */
+#kpi-inad-tooltip .kpi-tip-scroll { padding: 0; max-height: none; overflow-y: visible; }
+#kpi-inad-tooltip th:first-child, #kpi-inad-tooltip td:first-child { padding-left: 16px; }
+#kpi-inad-tooltip th:last-child, #kpi-inad-tooltip td:last-child { padding-right: 16px; }
+/* Valor do Total em Aberto na extremidade direita da tabela */
+#kpi-inad-tooltip .total-row td:last-child { text-align: right; }
 .kpi-tooltip-light .kpi-tooltip-footer {
   display: flex; justify-content: space-between; align-items: center;
   padding: 10px 16px; background: var(--bg-card);
@@ -1311,7 +1319,7 @@ body {
       <td>31/07/2026</td>
       <td class="danger-val">R$&nbsp;3.300,00</td>
       <td>Farei contato hoje dia 03/08.</td>
-    </tr></tbody><tfoot><tr class="total-row"><td>Total em Aberto</td><td></td><td class="danger-val" id="tooltip-inad-total">R$&nbsp;57.697,73</td><td></td></tr></tfoot></table></div>
+    </tr></tbody><tfoot><tr class="total-row"><td>Total em Aberto</td><td></td><td></td><td class="danger-val" id="tooltip-inad-total">R$&nbsp;57.697,73</td></tr></tfoot></table></div>
       </div>
     </div>
 
@@ -1949,7 +1957,7 @@ body {
 
   <!-- FOOTER -->
   <footer style="text-align:center;padding:20px 0 10px;color:var(--text-muted);font-size:11px;">
-    Dashboard Financeiro — Dias Reis Advocacia &nbsp;|&nbsp; Gerado em <span id="footer-date">03/08/2026</span>
+    Dashboard Financeiro — Dias Reis Advocacia &nbsp;|&nbsp; Gerado em <span id="footer-date">04/08/2026</span>
   </footer>
 
 </main>
